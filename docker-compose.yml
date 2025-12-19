@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  jenkins-agent:
+    image: jenkins/inbound-agent:latest
+    environment:
+      - JENKINS_URL=${JENKINS_URL}
+      - JENKINS_AGENT_NAME=${JENKINS_AGENT_NAME}
+      - JENKINS_SECRET=${JENKINS_SECRET}
+    volumes:
+      - ~/.yocto/cache/downloads:/home/jenkins/.yocto/cache/downloads
+      - ~/.yocto/cache/sstate:/home/jenkins/.yocto/cache/sstate
+      - ~/qnx800/:/home/jenkins/qnx800
+      - ~/.qnx:/home/jenkins/.qnx
+    command: -webSocket
+    user: "1000:1000" # Use host user ID to avoid permission issues on mounted volumes
+    restart: unless-stopped
